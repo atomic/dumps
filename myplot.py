@@ -88,9 +88,9 @@ def plot_categorical_map(ax, df_map, colorbar=True, nlargest=None, fig=None):
 def plot_feature(fig, ax, data, name, m, n):
     df_toplot = pd.DataFrame( data[name].values.reshape([m,n]) )
     if name == 'fuel_model':
-        myplot.plot_categorical_map(ax, df_toplot , fig=fig)
+        plot_categorical_map(ax, df_toplot , fig=fig)
     elif name == 'vegetation':
-        myplot.plot_categorical_map(ax, df_toplot , nlargest=10, fig=fig)
+        plot_categorical_map(ax, df_toplot , nlargest=10, fig=fig)
     elif name == 'elevation':
         ax.imshow( df_toplot, vmin=0, vmax=2000)
     else:
