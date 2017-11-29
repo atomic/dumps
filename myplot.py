@@ -113,7 +113,7 @@ def plot_all_data(data, col=3):
     data = data['data']
     features = data.columns.tolist()
     row      = int(math.ceil(len(features) / col))
-    f, axarr = plt.subplots( row, col, sharey=False,figsize=(28,18))
+    f, axarr = plt.subplots( row + 1, col, sharey=False,figsize=(28,18))
     for i,name in enumerate(features):
         plot_feature(f, axarr[ int(i/col), i % col], data, name, m, n)
     plt.show()
