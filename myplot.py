@@ -96,11 +96,11 @@ def plot_feature(fig, ax, data, name, m, n):
         ax.imshow( df_toplot, vmin=0, vmax=2000)
     else:
         ax.imshow( df_toplot, vmin=0 )          # for most data, minimum should be 0, except vegetation
-    ax.set_title(name, fontsize=30, color='white')
-    ax.xaxis.label.set_color('white')
-    ax.yaxis.label.set_color('white')
-    ax.tick_params(axis='x', colors='white')
-    ax.tick_params(axis='y', colors='white')
+    ax.set_title(name, fontsize=30, color='black')
+    ax.xaxis.label.set_color('black')
+    ax.yaxis.label.set_color('black')
+    ax.tick_params(axis='x', colors='black')
+    ax.tick_params(axis='y', colors='black')
     
 def quick_plot(feature, m, n, vmin=None, vmax=None):
     plt.figure(figsize=(14,7))
@@ -113,7 +113,6 @@ def plot_all_data(data, col=3):
     data = data['data']
     features = data.columns.tolist()
     row      = math.ceil(len(features) / col)
-
     f, axarr = plt.subplots( row, col, sharey=False,figsize=(28,18))
     for i,name in enumerate(features):
         plot_feature(f, axarr[ int(i/col), i % col], data, name, m, n)
@@ -125,9 +124,7 @@ def compare_hist(axx, A, B, title=None, threshold=0, width=1):
     df_AB = df_AB[df_AB > threshold].dropna()
     plt.figure(figsize=(25,6))
     df_AB.plot.bar(ax=plt.gca(), width=width, alpha=0.7)
-    #axx.xaxis.label.set_color('white')
-    #axx.yaxis.label.set_color('white')
-    plt.tick_params(axis='x', colors='white', labelsize=15)
-    plt.tick_params(axis='y', colors='white', labelsize=15)
-    plt.title(title, color='white', fontsize=25)
+    plt.tick_params(axis='x', colors='black', labelsize=15)
+    plt.tick_params(axis='y', colors='black', labelsize=15)
+    plt.title(title, color='black', fontsize=25)
     plt.show()
