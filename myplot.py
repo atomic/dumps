@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib
 import pandas as pd
+import math
 
 
 def cmap_discretize(cmap, N):
@@ -107,13 +108,15 @@ def quick_plot(feature, m, n, vmin=None, vmax=None):
     plt.colorbar()
     plt.show()
 
-def plot_all_data(data):
+def plot_all_data(data, col=3):
     m,n = data['m'], data['n']
     data = data['data']
-    features_used = ['elevation', 'slope', 'aspect', 'fuel_model', 'human_dist', 'vegetation','cum_fire', 'fire_freq']
-    f, axarr = plt.subplots( 4, 2, sharey=False,figsize=(28,18))
-    for i,name in enumerate(features_used):
-        plot_feature(f, axarr[ int(i/2), i % 2], data, name, m, n)
+    features = data.columns.tolist()
+    row      = math.ceil(len(features) / col)
+
+    f, axarr = plt.subplots( row, col, sharey=False,figsize=(28,18))
+    for i,name in enumerate(features):
+        plot_feature(f, axarr[ int(i/col), i % col], data, name, m, n)
     plt.show()
 
 def compare_hist(axx, A, B, title=None, threshold=0, width=1):
