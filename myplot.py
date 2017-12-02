@@ -6,7 +6,7 @@ import pandas as pd
 import math
 
 
-def cmap_discretize(cmap, N):
+def cmap_discretize(cmap: str, N: object) -> object:
     """Return a discrete colormap from the continuous colormap cmap.
 
         cmap: colormap instance, eg. cm.jet.
@@ -59,6 +59,7 @@ def cmap_xmap(function, cmap):
 
     return matplotlib.colors.LinearSegmentedColormap('colormap', cdict, 1024)
 
+
 def plot_categorical_map(ax, df_map, colorbar=True, nlargest=None, fig=None):
     #
     # alternatively:
@@ -68,61 +69,65 @@ def plot_categorical_map(ax, df_map, colorbar=True, nlargest=None, fig=None):
     #           , cmap=sns.color_palette('Set1', fuel_sets))
     #
     if nlargest:
-        codes   = pd.Series(df_map.values.flatten()).value_counts().nlargest(nlargest).index.tolist()
+        codes = pd.Series(df_map.values.flatten()).value_counts().nlargest(nlargest).index.tolist()
         codes.append(-1)
     else:
-        codes   = sorted(list(set(df_map.values.flatten())))
-    mapping = dict([ (code,i) for i,code in enumerate(codes)])
+        codes = sorted(list(set(df_map.values.flatten())))
+    mapping = dict([(code, i) for i, code in enumerate(codes)])
     getcode = lambda e: mapping[e] if e in mapping else mapping[-1]
     encoded = df_map.applymap(getcode)
-    k       = len(codes)
-    c       = cmap_discretize('jet', k)
-    pos     = ax.imshow(encoded, interpolation='nearest', cmap=c)
+    k = len(codes)
+    c = cmap_discretize("jet", k)
+    pos = ax.imshow(encoded, interpolation='nearest', cmap=c)
     if colorbar:
         if fig:
-            cb  = fig.colorbar(pos, ax=ax)
+            cb = fig.colorbar(pos, ax=ax)
         else:
-            cb  = ax.colorbar()
+            cb = ax.colorbar()
         cb.set_ticks(list(range(k)))
         cb.set_ticklabels(codes)
 
+
 def plot_feature(fig, ax, data, name, m, n):
-    df_toplot = pd.DataFrame( data[name].values.reshape([m,n]) )
+    df_toplot = pd.DataFrame(data[name].values.reshape([m, n]))
     if 'fuel_model' in name:
-        plot_categorical_map(ax, df_toplot , fig=fig)
+        plot_categorical_map(ax, df_toplot, fig=fig)
     elif 'vegetation' in name:
-        plot_categorical_map(ax, df_toplot , nlargest=10, fig=fig)
+        plot_categorical_map(ax, df_toplot, nlargest=10, fig=fig)
     elif name == 'elevation':
-        ax.imshow( df_toplot, vmin=0, vmax=2000)
+        ax.imshow(df_toplot, vmin=0, vmax=2000)
     else:
-        ax.imshow( df_toplot, vmin=0 )          # for most data, minimum should be 0, except vegetation
+        ax.imshow(df_toplot, vmin=0)  # for most data, minimum should be 0, except vegetation
     ax.set_title(name, fontsize=30, color='black')
     ax.xaxis.label.set_color('black')
     ax.yaxis.label.set_color('black')
     ax.tick_params(axis='x', colors='black')
     ax.tick_params(axis='y', colors='black')
-    
+
+
 def quick_plot(feature, m, n, vmin=None, vmax=None):
-    plt.figure(figsize=(14,7))
-    plt.imshow(feature.values.reshape([m,n]), vmin=vmin, vmax=vmax)
+    plt.figure(figsize=(14, 7))
+    plt.imshow(feature.values.reshape([m, n]), vmin=vmin, vmax=vmax)
     plt.colorbar()
     plt.show()
 
+
 def plot_all_data(data, col=3):
-    m,n = data['m'], data['n']
+    m, n = data['m'], data['n']
     data = data['data']
     features = data.columns.tolist()
-    row      = int(math.ceil(len(features) / col))
-    f, axarr = plt.subplots( row + 1, col, sharey=False,figsize=(28,18))
-    for i,name in enumerate(features):
-        plot_feature(f, axarr[ int(i/col), i % col], data, name, m, n)
+    row = int(math.ceil(len(features) / col))
+    f, axarr = plt.subplots(row + 1, col, sharey=False, figsize=(28, 18))
+    for i, name in enumerate(features):
+        plot_feature(f, axarr[int(i / col), i % col], data, name, m, n)
     plt.show()
 
+
 def compare_hist(axx, A, B, title=None, threshold=0, width=1):
-    df_AB = pd.concat([A.value_counts(), B.value_counts()], axis=1, keys=['A','B'])
+    df_AB = pd.concat([A.value_counts(), B.value_counts()], axis=1, keys=['A', 'B'])
     df_AB = df_AB / df_AB.sum()
     df_AB = df_AB[df_AB > threshold].dropna()
-    plt.figure(figsize=(25,6))
+    plt.figure(figsize=(25, 6))
     df_AB.plot.bar(ax=plt.gca(), width=width, alpha=0.7)
     plt.tick_params(axis='x', colors='black', labelsize=15)
     plt.tick_params(axis='y', colors='black', labelsize=15)
