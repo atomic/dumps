@@ -6,7 +6,7 @@ import pandas as pd
 import math
 
 
-def cmap_discretize(cmap: str, N: object) -> object:
+def cmap_discretize(cmap, N):
     """Return a discrete colormap from the continuous colormap cmap.
 
         cmap: colormap instance, eg. cm.jet.
