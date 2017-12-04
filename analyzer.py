@@ -37,7 +37,6 @@ def full_analysis(clf, _X_train, _X_rus, _X_val, yt, yr, yv, with_oob=False):
     _A = pd.concat([report_trainRUS, report_train, report_val]).loc[0]
     _B = pd.concat([report_trainRUS, report_train, report_val]).loc[1]
     _C = pd.concat([scores_trainRUS, scores_train, scores_val], axis=1)
-    results.append([_A, _B, _C])
     display_side_by_side(_C, _A, _B)
 
 
