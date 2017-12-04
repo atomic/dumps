@@ -1,5 +1,6 @@
 import pandas
 import matplotlib.pyplot as plt
+from IPython.display import display_html
 import numpy as np
 import matplotlib
 import pandas as pd
